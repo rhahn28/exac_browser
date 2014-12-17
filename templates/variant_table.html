@@ -8,18 +8,18 @@
         window.variants_template = _.template($('#variant-table-template').html());
         $('#variants_table_container').html(variants_template({table_variants: table_variants}));
         $("#variant_table").tablesorter({
-            sortList: [[1,0], [2,0], [9,1]]
+            sortList: [[1,0], [2,0], [9,1]],
+{#            widthFixed: true,#}
+{#            widgets: ['scroller'],#}
+{#            scrollHeight: 600#}
         });
-{#                .tablesorterPager({container: $("#pager"), positionFixed: false});#}
-{#        if (window.table_variants.length <= 10) {#}
-            $('#pager').hide();
-{#        }#}
+{#        $('.scroller_tbl').css('overflow-x', 'hidden');#}
 
         function get_af_category(d) {
             if (!d.allele_freq) {
                 return [0, '0'];
             } else if (d.allele_count == 1) {
-                return [1, 'a singleton'];
+                return [1, 'Singleton'];
             } else if (d.allele_freq < 1/10000) {
                 return [2, '<1/10000'];
             } else if (d.allele_freq < 1/1000) {
@@ -46,9 +46,10 @@
 
         var svg;
         $.each(data, function(i, d) {
-            d3.select('#variant_af_box_' + d.variant_id).attr("data-tooltip", "Shows allele frequency \n on a discrete " +
-                    "scale: \n singletons, <1/10,000, \n <1/1000, <1%, <5%, \n <50%, >50%. \n This particular variant is \n " +
-                    get_af_category(d)[1] + ".");
+{#            d3.select('#variant_af_box_' + d.variant_id).attr("data-tooltip", "Shows allele frequency \n on a discrete " +#}
+{#                    "scale: \n singletons, <1/10,000, \n <1/1000, <1%, <5%, \n <50%, >50%. \n This particular variant is \n " +#}
+{#                    get_af_category(d)[1] + ".");#}
+            d3.select('#variant_af_box_' + d.variant_id).attr("data-tooltip", get_af_category(d)[1]);
             svg = d3.select('#variant_af_box_' + d.variant_id)
                 .append("svg")
                 .attr("width", width)
@@ -74,6 +75,11 @@
                 })
                 .attr('height', height);
 
+        });
+        $('tr.table_variant').mouseover(function() {
+            var id = '#ellipse_' + $(this)[0].id;
+            console.log(id);
+            $(id).trigger('mouseover');
         });
         update_variants();
         $("#export_to_csv").on('click', function (event) {

@@ -9,11 +9,11 @@
         $('#variants_table_container').html(variants_template({table_variants: table_variants}));
         $("#variant_table").tablesorter({
             sortList: [[1,0], [2,0], [9,1]],
-{#            widthFixed: true,#}
-{#            widgets: ['scroller'],#}
-{#            scrollHeight: 600#}
+            widthFixed: true,
+            widgets: ['scroller'],
+            scrollHeight: 600
         });
-{#        $('.scroller_tbl').css('overflow-x', 'hidden');#}
+        $('.scroller_tbl').css('overflow-x', 'hidden');
 
         function get_af_category(d) {
             if (!d.allele_freq) {
